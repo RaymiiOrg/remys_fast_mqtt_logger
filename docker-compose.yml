@@ -1,0 +1,11 @@
+services:
+  remys-fast-mqtt-logger:
+    image: raymii/remys_fast_mqtt_logger:latest
+    environment:
+      - BROKER=test.mosquitto.org:1883
+      #- USERNAME=user
+      #- PASSWORD=pass
+      #- TOPIC=home/temperature
+      #- FACILITY=LOG_LOCAL6
+      #- NO_LOG_TO_STDOUT=1
+    restart: unless-stopped
