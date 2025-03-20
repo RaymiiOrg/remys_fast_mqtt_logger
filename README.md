@@ -69,11 +69,6 @@ run the application:
     cd build
     cmake -DCMAKE_BUILD_TYPE=Release  ..
 
-Or manually compile using `g++`:
-
-```bash
-g++ -std=c++11 -o remys_fast_mqtt_logger main.cpp -lpaho-mqttpp3 -lsyslog -lstdc++ -pthread
-```
 
 ## Usage
 
