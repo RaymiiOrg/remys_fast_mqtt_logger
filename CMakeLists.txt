@@ -9,7 +9,20 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
 
 find_package(Threads REQUIRED)
 
-add_executable(remys_fast_mqtt_logger main.cpp)
+include(CheckIncludeFile)
+check_include_file(syslog.h HAVE_SYSLOG)
+
+if(HAVE_SYSLOG)
+    add_definitions(-DHAVE_SYSLOG)
+endif()
+
+add_executable(remys_fast_mqtt_logger src/main.cpp
+        src/ThreadPool.cpp
+        src/ThreadPool.h
+        src/Logger.cpp
+        src/Logger.h
+        src/MQTT_Callbacks.cpp
+        src/MQTT_Callbacks.h)
 
 target_link_libraries(remys_fast_mqtt_logger
         PRIVATE

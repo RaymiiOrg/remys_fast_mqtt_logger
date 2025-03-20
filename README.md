@@ -6,8 +6,10 @@ and logs messages received from the broker
 to **syslog** (with configurable facility) and 
 optionally to **stdout**. 
 
-Every message is logged on a separate thread, which
-is what makes is fast and able to process
+Connection failures are handled with automatic reconnect.
+
+Every message is logged on a separate thread in a thread pool, 
+which is what makes is fast and able to process
 thousands of messages per second. Using Pipe Viewer
 to measure lines per second from a test broker:
 
@@ -22,6 +24,10 @@ This is similar to `mosquitto_sub`:
 It is designed for use cases where logging MQTT 
 message data needs to be centralized or handled 
 by a logging service like **syslog**.
+
+It is cross-platform, meaning that if you don't have
+`syslog.h`, it will also compile and run, but it only
+prints to STDOUT.
 
 ## Features
 - Connects to an MQTT broker with user authentication (username and password).
@@ -103,9 +109,9 @@ in your shell history.
     - The syslog facility to log to. Must prefix with `LOG_`. 
     - Default is `LOG_LOCAL6`.
 
-- `-s, --no-log-to-stdout`
-    - Disable logging to stdout. 
-    - Default is **disabled**, meaning messages will be logged to both **stdout** and **syslog** unless specified.
+- `-s, --no-log-to-stderr`
+    - Disable logging to STDERR 
+    - Default is **disabled**, meaning messages will be logged to both **stderr** and **syslog** unless specified.
 
 
 #### Environment Variables
@@ -118,6 +124,7 @@ environment variables:
 - `PASSWORD`: MQTT password.
 - `TOPIC`: MQTT topic to subscribe to (default: #).
 - `FACILITY`: Syslog facility (default: LOG_LOCAL6).
+- `NO_LOG_TO_STDERR`: Disable logging to STDERR (default: on)
 
 ### Example Commands:
 
