@@ -1,4 +1,4 @@
-FROM gcc:latest
+FROM gcc:14
 WORKDIR /app
 COPY . .
 RUN apt-get update && apt-get install -y \
