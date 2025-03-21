@@ -135,13 +135,13 @@ int main(int argc, char *argv[]) {
     auto syslogFacility = Logger::getFacilityFromString(arguments.facility);
     Logger logger = Logger(argp_program_name, syslogFacility, arguments.no_log_to_stderr);
 
-    logger.log(LOG_INFO, "Started Remys Fast MQTT Logger by Remy van Elst, raymii.org, AGPLv3");
+    logger.log(LOG_INFO, "Started Remys Fast MQTT Logger by Remy van Elst, raymii.org, AGPLv3\n");
 
     std::signal(SIGINT, signal_handler);
     std::signal(SIGTERM, signal_handler);
 
 #ifndef HAVE_SYSLOG
-    fprintf(stderr, "<syslog.h> not found. Only printing to STDOUT!");
+    fprintf(stderr, "\n<syslog.h> not found. Only printing to STDOUT!\n");
 #endif
 
     // large buffer size to combat: MQTT error [-12]: No more messages can be buffered
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
 
     try {
         if (!client.connect(connOpts)->wait_for(30000)) {
-            logger.log(LOG_ERR, "Timeout Connecting\n");
+            logger.log(LOG_ERR, "\nTimeout Connecting\n");
             exit(1);
         }
     } catch (const std::exception &e) {
@@ -178,6 +178,6 @@ int main(int argc, char *argv[]) {
     stop_cv.wait(lock, [] { return stop_signal_received; });
 
     client.disconnect()->wait();
-    logger.log(LOG_INFO, "Stopping Remys Fast MQTT Logger by Remy van Elst, raymii.org, AGPLv3");
+    logger.log(LOG_INFO, "Stopping Remys Fast MQTT Logger by Remy van Elst, raymii.org, AGPLv3\n");
     return 0;
 }

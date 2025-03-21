@@ -16,6 +16,8 @@
  */
 
 #include "Logger.h"
+
+#include <chrono>
 #include <map>
 #include <cstdarg>
 
@@ -35,7 +37,7 @@ Logger::Logger(const char *ident, int facility, bool no_log_to_stderr)
 #else
     (void)ident;
     (void)facility;
-    (void)log_to_stdout;
+    (void)no_log_to_stderr;
 #endif
 }
 
@@ -53,8 +55,26 @@ void Logger::log(int priority, const char *format, ...) const
     vsyslog(priority, format, args);
     va_end(args);
 #else
-    printf("topic='%s', qos='%i', retained='%s', msg='%s'\n",
-        msg->get_topic().c_str(), msg->get_qos(), msg->is_retained() ? "true" : "false", msg->get_payload_ref().c_str());
+    auto now = std::chrono::system_clock::now();
+    auto now_time_t = std::chrono::system_clock::to_time_t(now);
+    auto now_us = std::chrono::duration_cast<std::chrono::microseconds>(now.time_since_epoch()) % 1000000;
+
+    std::tm now_tm = *std::localtime(&now_time_t);
+
+    printf("%04d-%02d-%02d %02d:%02d:%02d.%06ld ",
+           now_tm.tm_year + 1900,
+           now_tm.tm_mon + 1,
+           now_tm.tm_mday,
+           now_tm.tm_hour,
+           now_tm.tm_min,
+           now_tm.tm_sec,
+           now_us.count());
+
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+    printf("\n");
 #endif
 }
 
