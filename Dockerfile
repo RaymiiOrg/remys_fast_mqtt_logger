@@ -1,6 +1,7 @@
 FROM gcc:14
 WORKDIR /app
-COPY . .
+COPY CMakeLists.txt .
+COPY src .
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
