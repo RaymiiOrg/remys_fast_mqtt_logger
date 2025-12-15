@@ -1,23 +1,23 @@
-services:
-  remys-fast-mqtt-logger:
-    image: raymii/remys_fast_mqtt_logger:latest
-# or to build locally:
-#    context: .
-#    dockerfile: Dockerfile
-# set when using certificates:
-#    volumes:
-#      - /path/to/client.crt:/ssl/client.crt
-#      - /path/to/client.key:/ssl/client.key
-#      - /path/to/ca.crt:/ssl/ca.crt
-    environment:
-      - BROKER=tcp://test.mosquitto.org:1883
-      #- USERNAME=user
-      #- PASSWORD=pass
-      #- TOPIC=home/temperature
-      #- FACILITY=LOG_LOCAL6
-      #- NO_LOG_TO_STDOUT=1
-      #- CA_FILE=/ssl/ca.crt
-      #- CLIENT_CERT=/ssl/client.crt
-      #- CLIENT_KEY=/ssl/client.key
-      #- CLIENT_KEY_PASSWORD=1234
-    restart: unless-stopped
+ services:
+   remys-fast-mqtt-logger:
+     image: raymii/remys_fast_mqtt_logger:latest
+ # or to build locally:
+ #    context: .
+ #    dockerfile: Dockerfile
+ # set when using certificates:
+ #    volumes:
+ #      - /path/to/client.crt:/ssl/client.crt
+ #      - /path/to/client.key:/ssl/client.key
+ #      - /path/to/ca.crt:/ssl/ca.crt
+     environment:
+       - BROKER=tcp://test.mosquitto.org:1883
+       #- USERNAME=user
+       #- PASSWORD=pass
+       #- TOPIC=home/temperature
+       #- FACILITY=LOG_LOCAL6
+       #- NO_LOG_TO_STDOUT=1
+       #- CA_FILE=/ssl/ca.crt
+       #- CLIENT_CERT=/ssl/client.crt
+       #- CLIENT_KEY=/ssl/client.key
+       #- CLIENT_KEY_PASSWORD=1234
+     restart: unless-stopped
