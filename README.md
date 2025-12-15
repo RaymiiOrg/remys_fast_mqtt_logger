@@ -31,6 +31,7 @@ prints to STDOUT.
 
 ## Features
 - Connects to an MQTT broker with user authentication (username and password).
+- Connects to an MQTT broker using client certificates.
 - Subscribes to a topic (`#` by default, can be customized via argument).
 - Logs received MQTT messages to **syslog** with customizable log **facility**.
 - Optionally logs messages to **stdout**.
@@ -88,17 +89,18 @@ in your shell history.
 
 - `-b BROKER, --broker=BROKER`
     - The MQTT broker URL (including the port) to connect to. 
-    - Example: `test.mosquitto.org:1883`.
+    - Example: `tcp://test.mosquitto.org:1883`.
+    - Example: `ssl://test.mosquitto.org:8883`.
 
 - `-t TOPIC, --topic=TOPIC`
     - The MQTT topic to subscribe to. 
     - Default is `#` (subscribe to all topics).
 
 - `-u USERNAME, --username=USERNAME`
-    - Username for authenticating with the MQTT broker.
+    - Username for authenticating with the MQTT broker. (optional)
 
 - `-p PASSWORD, --password=PASSWORD`
-    - Password for authenticating with the MQTT broker.
+    - Password for authenticating with the MQTT broker. (optional)
 
 - `-f FACILITY, --facility=FACILITY`
     - The syslog facility to log to. Must prefix with `LOG_`. 
@@ -107,6 +109,23 @@ in your shell history.
 - `-s, --no-log-to-stderr`
     - Disable logging to STDERR 
     - Default is **disabled**, meaning messages will be logged to both **stderr** and **syslog** unless specified.
+
+- `-A, --ca-file`
+    - Path to CA file that authenticates the broker to the client (optional)
+
+- `-C, --client-cert`
+    - Path to client certificate file (optional)
+
+- `-K, --client-key`
+    - Path to client key file (optional)
+
+- `-P, --client-key-password`
+    - Password for client key file (optional). 
+    - If not provided but key has a password, you will be asked interactively on CLI.
+
+If any of `--ca-file`, `--client-cert` or  `--client-key` is given,
+all three must be provided.
+
 
 
 #### Environment Variables
@@ -120,6 +139,10 @@ environment variables:
 - `TOPIC`: MQTT topic to subscribe to (default: #).
 - `FACILITY`: Syslog facility (default: LOG_LOCAL6).
 - `NO_LOG_TO_STDERR`: Disable logging to STDERR (default: on)
+- `CA_FILE`: Path to CA file that authenticates the broker to the client
+- `CLIENT_CERT`: Path to client certificate file
+- `CLIENT_KEY`: Path to client key file
+- `CLIENT_KEY_PASSWORD`: Password for client key file
 
 ### Example Commands:
 

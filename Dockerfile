@@ -1,6 +1,5 @@
 FROM gcc:14
 WORKDIR /app
-COPY . .
 RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
@@ -15,6 +14,9 @@ RUN apt-get update && apt-get install -y \
 
 COPY docker-rsyslog.conf /etc/rsyslog.conf
 COPY docker-supervisord.conf /etc/supervisor/supervisord.conf
+
+COPY CMakeLists.txt /app/
+COPY src /app/src
 
 RUN mkdir build && cd build \
     && cmake -DCMAKE_BUILD_TYPE=Release .. \
