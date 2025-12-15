@@ -1,26 +1,21 @@
 FROM gcc:14
 WORKDIR /app
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    cmake \
-    bash \
-    libssl-dev \
-    libpaho-mqtt-dev \
-    libpaho-mqttpp-dev \
-    rsyslog \
-    supervisor \
-    mosquitto-clients \
+
+# Copy only project files required for build. Adjust as needed if you add files.
+COPY CMakeLists.txt ./
+COPY src/ ./src/
+COPY include/ ./include/
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       build-essential \
+       cmake \
     && rm -rf /var/lib/apt/lists/*
 
-COPY docker-rsyslog.conf /etc/rsyslog.conf
-COPY docker-supervisord.conf /etc/supervisor/supervisord.conf
+# Build
+RUN mkdir -p build && cd build \
+    && cmake .. \
+    && cmake --build . -- -j$(nproc)
 
-COPY CMakeLists.txt /app/
-COPY src /app/src
-
-RUN mkdir build && cd build \
-    && cmake -DCMAKE_BUILD_TYPE=Release .. \
-    && make \
-    && make install
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+# Binary output location may vary depending on your CMakeLists; adjust CMD accordingly
+CMD ["/app/build/remys_fast_mqtt_logger"]
